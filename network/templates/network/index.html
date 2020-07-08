@@ -1,5 +1,35 @@
 {% extends "network/layout.html" %}
 
 {% block body %}
-    TODO
+    
+{% if user.is_authenticated %}
+
+    <!-- New Post Code Block -->
+
+    <div style="border: 1px solid; margin: 20px 20px; padding: 20px 20px;">
+        <form class="form-group" style="margin-bottom: 0">
+            <h3>New Post</h3>
+            <textarea class="form-control" style="height: 100px;" placeholder="Write a post here!"></textarea>      
+            <button type="submit" class="btn btn-primary" style="margin-top: 20px;">Send!</button>  
+        </form>
+    </div>
+
+    
+    
+    <!-- All Posts on the website -->
+
+    {% for post in posts %}
+    <div class="post">
+        <div class="user">{{post.user}}</div>
+        <div class="content">{{post.content}}</div>
+        <div class="likes">{{post.likes}}</div>
+        <f class="row">
+            <div class="col-10"></div>
+            <div class="timestamp col-2">{{post.date}} {{post.time}}</div>
+        </f>
+    </div>
+    {% endfor %}
+
+{% endif %}
+
 {% endblock %}
