@@ -128,7 +128,7 @@ def likes(request, id):
     post.likes += 1;
     post.save()
     print(post.likes)
-    return JsonResponse({"likes": post.likes}, status=201)
+    return HttpResponse('')
     
 def dislikes(request, id):
 
@@ -138,6 +138,32 @@ def dislikes(request, id):
     post.likes -= 1;
     post.save()
     print(post.likes)
-    return JsonResponse({"likes": post.likes}, status=201)
+    return HttpResponse('')
+
+def follow(request, username):
+
+    follow = Follow.objects.get(name=request.user)
+    user = User.objects.get(username=username)
+
+    if user not in follow.following.all():
+        follow.following.add(user)
+        follow.save()
+    else:
+        print("Error")
+    
+    return HttpResponse('')
+
+def unfollow(request, username):
+
+    follow = Follow.objects.get(name=request.user)
+    user = User.objects.get(username=username)
+
+    if user in follow.following.all():
+        follow.following.remove(user)
+        follow.save()
+    else:
+        print("Error")
+
+    return HttpResponse('')
     
 

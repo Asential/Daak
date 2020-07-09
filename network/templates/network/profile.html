@@ -13,9 +13,9 @@
     {% else %}
         <h2> {{username}} </h2>
         {% if username in followed %}
-            <button class="follow">Follow!</button>
+            <button class="unfollow" name="{{username}}">Following!</button>
         {% else %}
-            <button class="unfollow">Following</button>
+            <button class="follow" name="{{username}}">Follow</button>
         {% endif %}
     {% endif %}
 
