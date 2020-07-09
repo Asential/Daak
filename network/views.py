@@ -3,7 +3,7 @@ from django.db import IntegrityError
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
-from .models import User, Post, Liked
+from .models import User, Post, Liked, Follow
 from django.http import JsonResponse
 
 
@@ -78,12 +78,27 @@ def register(request):
 
 def profile(request, username):
     user = User.objects.get(username = username)
-    posts = Post.objects.all().filter(user = user.id)
+    posts = Post.objects.all().filter(user = user.id).order_by('-id')
 
-    return render(request, "network/profile.html", {
-        "username": user,
-        "posts": posts
-    })
+    if request.user.is_authenticated:
+        
+        follow = Follow.objects.get(name=request.user)
+        followed = follow.following.all()
+
+        liked = Liked.objects.get(name=request.user)
+        likedlist = liked.post.all().order_by('-id')
+        return render(request, "network/profile.html", {
+            "username": user,
+            "posts": posts,
+            "liked": likedlist,
+            "followed": followed
+        })
+    
+    else:
+        return render(request, "network/profile.html", {
+            "username": user,
+            "posts": posts
+        })
 
 def post(request):
 
