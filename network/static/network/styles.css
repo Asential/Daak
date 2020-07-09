@@ -7,19 +7,21 @@
 }
 
 .user{
-    background-color: red;
-    width: 10%;
-    margin-top: 10px;
+    background-color: coral;
+    width: fit-content;
+    display: inline-block;
+    text-align: center;
+    margin-top: 10px
 }
 
 .content{
     margin: 10px 0;
-    background-color: brown;
+    background-color: white;
 }
 
 .timestamp{
-    background-color: orange;
-    text-align: right;
+    background-color: coral;
+    text-align: center;
     width: 25%;
 
 }
@@ -30,6 +32,9 @@
 
 .likes{
     background-color: pink;
+    width: 3%;
+    text-align: center;
+
 }
 
 .user, .likes, .content, .timestamp{

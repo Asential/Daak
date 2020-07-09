@@ -12,3 +12,15 @@ class Post(models.Model):
     time = models.TimeField(auto_now=False, auto_now_add=True)
     def __str__(self):
         return f"{self.user} : {self.content}"
+
+class Followers(models.Model):
+    name = models.ForeignKey(User, on_delete=models.CASCADE)
+    followers = models.ManyToManyField(User, blank=True, related_name="usersFollowing")
+    def __str__(self):
+        return f"{self.name}"
+
+class Following(models.Model):
+    name = models.ForeignKey(User, on_delete=models.CASCADE)
+    following = models.ManyToManyField(User, blank=True, related_name="usersFollowed")
+    def __str__(self):
+        return f"{self.name}"

@@ -65,3 +65,35 @@ def register(request):
         return HttpResponseRedirect(reverse("index"))
     else:
         return render(request, "network/register.html")
+
+def profile(request, username):
+    user = User.objects.get(username = username)
+    posts = Post.objects.all().filter(user = user.id)
+
+    return render(request, "network/profile.html", {
+        "username": user,
+        "posts": posts
+    })
+
+def post(request):
+
+    if request.method == "POST":
+
+        form = request.POST
+        user = request.user
+        content = form["content"]
+
+        newPost = Post.objects.create(
+            user = user,
+            content = content,
+        )
+        newPost.save()
+        print("Success")
+        return HttpResponseRedirect(reverse("index"))
+        
+    else:
+        print("error")
+        return HttpResponseRedirect(reverse("index"))
+    
+    
+
