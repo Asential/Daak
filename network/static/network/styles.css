@@ -26,6 +26,10 @@
 
 }
 
+.dislike{
+    background-color: greenyellow;
+}
+
 .row{
     margin: 10px 0;
 }

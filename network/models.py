@@ -13,14 +13,20 @@ class Post(models.Model):
     def __str__(self):
         return f"{self.user} : {self.content}"
 
-class Followers(models.Model):
+class Follower(models.Model):
     name = models.ForeignKey(User, on_delete=models.CASCADE)
     followers = models.ManyToManyField(User, blank=True, related_name="usersFollowing")
     def __str__(self):
         return f"{self.name}"
 
-class Following(models.Model):
+class Follow(models.Model):
     name = models.ForeignKey(User, on_delete=models.CASCADE)
     following = models.ManyToManyField(User, blank=True, related_name="usersFollowed")
+    def __str__(self):
+        return f"{self.name}"
+
+class Liked(models.Model):
+    name = models.ForeignKey(User, on_delete=models.CASCADE)
+    post = models.ManyToManyField(Post, blank=True, related_name="liked")
     def __str__(self):
         return f"{self.name}"

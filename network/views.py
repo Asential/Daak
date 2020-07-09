@@ -3,15 +3,24 @@ from django.db import IntegrityError
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
-
-from .models import User, Post
+from .models import User, Post, Liked
+from django.http import JsonResponse
 
 
 def index(request):
 
     posts = Post.objects.all().order_by('-id')
+    if request.user.is_authenticated:
+        liked = Liked.objects.get(name=request.user)
+        likedlist = liked.post.all().order_by('-id')
+        return render(request, "network/index.html", {
+            "posts": posts,
+            "liked": likedlist
+        })
+
     return render(request, "network/index.html", {
-        "posts": posts
+        "posts": posts,
+        
     })
 
 
@@ -39,7 +48,6 @@ def logout_view(request):
     logout(request)
     return HttpResponseRedirect(reverse("index"))
 
-
 def register(request):
     if request.method == "POST":
         username = request.POST["username"]
@@ -57,6 +65,8 @@ def register(request):
         try:
             user = User.objects.create_user(username, email, password)
             user.save()
+            liked = Liked.objects.create(name = user)
+            liked.save()
         except IntegrityError:
             return render(request, "network/register.html", {
                 "message": "Username already taken."
@@ -82,7 +92,6 @@ def post(request):
         form = request.POST
         user = request.user
         content = form["content"]
-
         newPost = Post.objects.create(
             user = user,
             content = content,
@@ -94,6 +103,26 @@ def post(request):
     else:
         print("error")
         return HttpResponseRedirect(reverse("index"))
+
+def likes(request, id):
     
+    liked = Liked.objects.get(name=request.user)
+    post = Post.objects.get(id=id)
+
+    liked.post.add(post)
+    post.likes += 1;
+    post.save()
+    print(post.likes)
+    return JsonResponse({"likes": post.likes}, status=201)
+    
+def dislikes(request, id):
+
+    liked = Liked.objects.get(name=request.user)
+    post = Post.objects.get(id=id)
+    liked.post.remove(post)
+    post.likes -= 1;
+    post.save()
+    print(post.likes)
+    return JsonResponse({"likes": post.likes}, status=201)
     
 

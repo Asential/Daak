@@ -15,20 +15,46 @@
         </form>
     </div>
 
-{% endif %}    
+{% endif %}
+
+{% if user.is_authenticated %}
 
     <!-- All Posts on the website -->
     {% for post in posts %}
-    <div class="post">
-        <div class="user"><a href="{% url 'profile' post.user %}">{{post.user}}</a></div>
-        <div class="content">{{post.content}}</div>
-        <div class="likes">{{post.likes}}</div>
-        <f class="row">
-            <div class="col-10"></div>
-            <div class="timestamp col-2">{{post.date}} {{post.time}}</div>
-        </f>
-    </div>
+        {% if post in liked %}
+            <div class="post">
+                <div class="user"><a href="{% url 'profile' post.user %}">{{post.user}}</a></div>
+                <div class="content">{{post.content}}</div>
+                <button class="dislike" id="{{post.id}}">{{post.likes}}</button>
+                <f class="row">
+                    <div class="col-10"></div>
+                    <div class="timestamp col-2">{{post.date}} {{post.time}}</div>
+                </f>
+            </div>
+        {% else %}
+            <div class="post">
+                <div class="user"><a href="{% url 'profile' post.user %}">{{post.user}}</a></div>
+                <div class="content">{{post.content}}</div>
+                <button class="like" id="{{post.id}}">{{post.likes}}</button>
+                <f class="row">
+                    <div class="col-10"></div>
+                    <div class="timestamp col-2">{{post.date}} {{post.time}}</div>
+                </f>
+            </div>
+        {% endif %}
     {% endfor %}
 
-
+{% else %}
+    {% for post in posts %}
+        <div class="post">
+            <div class="user"><a href="{% url 'profile' post.user %}">{{post.user}}</a></div>
+            <div class="content">{{post.content}}</div>
+            <div class="likes">{{post.likes}}</div>
+            <f class="row">
+                <div class="col-10"></div>
+                <div class="timestamp col-2">{{post.date}} {{post.time}}</div>
+            </f>
+        </div>
+    {% endfor %}
+{% endif %}
 {% endblock %}
