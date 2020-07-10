@@ -18,6 +18,15 @@ document.addEventListener('DOMContentLoaded', function() {
         unfollow(this)
     });
 
+    $('body').on('click', '.edit', function(){
+        console.log("Editing")
+        edit(this)
+    });
+
+    $('body').on('click', '.save', function(){
+        console.log("Saved")
+        save(this)
+    });
 
 });
 
@@ -74,4 +83,31 @@ function dislike(post){
     info.html(count)
     data = fetch(`/dislikes/${post.id}`)
 
+}
+
+function edit(post){
+    content = $(`div[name=${post.id}]`)
+    console.log(content.html())
+    data = content.html()
+    content.html(`<textarea id='${post.id}'>${data}</textarea>`)
+    
+    info = $(post)
+    info.html('Save')
+    info.removeClass('edit')
+    info.addClass('save')
+}
+
+function save(post){
+    content = $(`div[name=${post.id}]`)
+    newdata = $(`textarea[id=${post.id}]`).val()
+    console.log(newdata)
+    content.html(newdata)
+
+
+    info = $(post)
+    info.html('Edit')
+    info.removeClass('save')
+    info.addClass('edit')
+
+    data = fetch(`/save/${post.id}/${newdata}`)
 }

@@ -210,5 +210,15 @@ def following(request):
             "posts": postlist,
             "liked": likedlist
         })
-    # posts = Post.objects.all().filter(user = user.id).order_by('-id')
 
+def save(request, id, data):
+    post = Post.objects.get(id=id)
+    if request.user == post.user:
+        print( "Old data: " + str(post.content))
+        post.content = data
+        post.save()
+        print( "New data: " + str(post.content))
+        return HttpResponse('')
+    else:
+        print("Error, You can't edit that!")
+        return HttpResponse('')

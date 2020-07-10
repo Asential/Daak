@@ -30,6 +30,11 @@
     background-color: greenyellow;
 }
 
+.edit, .save{
+    width: 10%;
+    background-color: red;
+}
+
 .row{
     margin: 10px 0;
 }

@@ -5,27 +5,19 @@
 {% if user.is_authenticated %}
 
     {% for post in posts %}
-    {% if post in liked %}
-        <div class="post">
-            <div class="user"><a href="{% url 'profile' post.user %}">{{post.user}}</a></div>
-            <div class="content">{{post.content}}</div>
-            <button class="dislike" id="{{post.id}}">{{post.likes}}</button>
-            <f class="row">
-                <div class="col-10"></div>
-                <div class="timestamp col-2">{{post.date}} {{post.time}}</div>
-            </f>
-        </div>
-    {% else %}
-        <div class="post">
-            <div class="user"><a href="{% url 'profile' post.user %}">{{post.user}}</a></div>
-            <div class="content">{{post.content}}</div>
-            <button class="like" id="{{post.id}}">{{post.likes}}</button>
-            <f class="row">
-                <div class="col-10"></div>
-                <div class="timestamp col-2">{{post.date}} {{post.time}}</div>
-            </f>
-        </div>
-    {% endif %}
+    <div class="post">
+        <div class="user"><a href="{% url 'profile' post.user %}">{{post.user}}</a></div>
+        <div class="content">{{post.content}}</div>
+        {% if post in liked %}
+                <button class="dislike" id="{{post.id}}">{{post.likes}}</button>
+        {% else %}
+                <button class="like" id="{{post.id}}">{{post.likes}}</button>
+        {% endif %}
+        <f class="row">
+            <div class="col-10"></div>
+            <div class="timestamp col-2">{{post.date}} {{post.time}}</div>
+        </f>
+    </div>
     {% endfor %}
 
 {% endif %}
