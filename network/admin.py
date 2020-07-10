@@ -7,9 +7,12 @@ class LikedAdmin(admin.ModelAdmin):
 class FollowAdmin(admin.ModelAdmin):
     filter_horizontal = ("following",)
 
+class FollowerAdmin(admin.ModelAdmin):
+    filter_horizontal = ("followers",)
+
 # Register your models here.
 admin.site.register(User)
 admin.site.register(Post)
-admin.site.register(Follower)
+admin.site.register(Follower, FollowerAdmin)
 admin.site.register(Follow, FollowAdmin)
 admin.site.register(Liked, LikedAdmin)

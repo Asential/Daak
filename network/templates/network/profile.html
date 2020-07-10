@@ -17,7 +17,14 @@
         {% else %}
             <button class="follow" name="{{username}}">Follow</button>
         {% endif %}
+        
     {% endif %}
+    <div>
+        Followers: <div id="followersCount">{{followersCount}}</div>
+    </div>
+    <div>
+        Following: <div id="followingCount">{{followingCount}}</div>
+    </div>
 
     {% for post in posts %}
         {% if post in liked %}

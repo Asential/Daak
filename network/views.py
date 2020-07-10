@@ -3,7 +3,7 @@ from django.db import IntegrityError
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
-from .models import User, Post, Liked, Follow
+from .models import User, Post, Liked, Follow, Follower
 from django.http import JsonResponse
 
 
@@ -67,6 +67,11 @@ def register(request):
             user.save()
             liked = Liked.objects.create(name = user)
             liked.save()
+            follow = Follow.objects.create(name = user)
+            follow.save()
+            follower = Follower.objects.create(name = user)
+            follower.save()
+
         except IntegrityError:
             return render(request, "network/register.html", {
                 "message": "Username already taken."
@@ -82,6 +87,12 @@ def profile(request, username):
 
     if request.user.is_authenticated:
         
+        follower = Follower.objects.get(name=user)
+        followersCount = follower.followers.count()
+
+        following = Follow.objects.get(name=user)
+        followingCount = following.following.count()
+    
         follow = Follow.objects.get(name=request.user)
         followed = follow.following.all()
 
@@ -91,7 +102,9 @@ def profile(request, username):
             "username": user,
             "posts": posts,
             "liked": likedlist,
-            "followed": followed
+            "followed": followed,
+            "followersCount": followersCount,
+            "followingCount": followingCount
         })
     
     else:
@@ -144,10 +157,14 @@ def follow(request, username):
 
     follow = Follow.objects.get(name=request.user)
     user = User.objects.get(username=username)
+    follower = Follower.objects.get(name=user) 
 
     if user not in follow.following.all():
         follow.following.add(user)
         follow.save()
+        
+        follower.followers.add(request.user)
+        follower.save()
     else:
         print("Error")
     
@@ -158,12 +175,40 @@ def unfollow(request, username):
     follow = Follow.objects.get(name=request.user)
     user = User.objects.get(username=username)
 
+    follower = Follower.objects.get(name=user)
+
     if user in follow.following.all():
         follow.following.remove(user)
         follow.save()
+        follower.followers.remove(request.user)
+        follower.save()
     else:
         print("Error")
 
     return HttpResponse('')
     
+def following(request):
+    
+    posts = Post.objects.all().order_by('-id')
+
+    follow = Follow.objects.get(name=request.user)
+    followed = follow.following.all()
+
+    liked = Liked.objects.get(name=request.user)
+    likedlist = liked.post.all().order_by('-id')
+
+    postlist = []
+
+    for post in posts:
+        for following in followed:
+            if post.user == following:
+                postlist.append(post)
+                continue
+    
+
+    return render(request, "network/following.html", {
+            "posts": postlist,
+            "liked": likedlist
+        })
+    # posts = Post.objects.all().filter(user = user.id).order_by('-id')
 

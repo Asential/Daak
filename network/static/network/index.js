@@ -27,6 +27,11 @@ function follow(user){
     info.addClass('unfollow')
     info.removeClass('follow')
     info.html('Following!')
+
+    count = $('#followersCount').html()
+    count++
+    $('#followersCount').html(count)
+    
     data = fetch(`/follow/${user.name}`)
 
 }
@@ -37,6 +42,11 @@ function unfollow(user){
     info.addClass('follow')
     info.removeClass('unfollow')
     info.html('Follow!')
+
+    count = $('#followersCount').html()
+    count--
+    $('#followersCount').html(count)
+
     data = fetch(`/unfollow/${user.name}`)
 
 }
