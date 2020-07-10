@@ -5,11 +5,22 @@ from django.shortcuts import render
 from django.urls import reverse
 from .models import User, Post, Liked, Follow, Follower
 from django.http import JsonResponse
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 
 def index(request):
 
-    posts = Post.objects.all().order_by('-id')
+    post_list = Post.objects.all().order_by('-id')
+    page = request.GET.get('page', 1)
+
+    paginator = Paginator(post_list, 10)
+    try:
+        posts = paginator.page(page)
+    except PageNotAnInteger:
+        posts = paginator.page(1)
+    except EmptyPage:
+        posts = paginator.page(paginator.num_pages)
+
     if request.user.is_authenticated:
         liked = Liked.objects.get(name=request.user)
         likedlist = liked.post.all().order_by('-id')
@@ -83,15 +94,31 @@ def register(request):
 
 def profile(request, username):
     user = User.objects.get(username = username)
-    posts = Post.objects.all().filter(user = user.id).order_by('-id')
+    post_list = Post.objects.all().filter(user = user.id).order_by('-id')
+
+    page = request.GET.get('page', 1)
+
+    paginator = Paginator(post_list, 10)
+    try:
+        posts = paginator.page(page)
+    except PageNotAnInteger:
+        posts = paginator.page(1)
+    except EmptyPage:
+        posts = paginator.page(paginator.num_pages)
+
+    follower = Follower.objects.get(name=user)
+    followersCount = follower.followers.count()
+
+    following = Follow.objects.get(name=user)
+    followingCount = following.following.count()
 
     if request.user.is_authenticated:
         
-        follower = Follower.objects.get(name=user)
-        followersCount = follower.followers.count()
+        # follower = Follower.objects.get(name=user)
+        # followersCount = follower.followers.count()
 
-        following = Follow.objects.get(name=user)
-        followingCount = following.following.count()
+        # following = Follow.objects.get(name=user)
+        # followingCount = following.following.count()
     
         follow = Follow.objects.get(name=request.user)
         followed = follow.following.all()
@@ -110,7 +137,9 @@ def profile(request, username):
     else:
         return render(request, "network/profile.html", {
             "username": user,
-            "posts": posts
+            "posts": posts,
+            "followersCount": followersCount,
+            "followingCount": followingCount
         })
 
 def post(request):
@@ -205,9 +234,18 @@ def following(request):
                 postlist.append(post)
                 continue
     
+    page = request.GET.get('page', 1)
+
+    paginator = Paginator(postlist, 10)
+    try:
+        posts = paginator.page(page)
+    except PageNotAnInteger:
+        posts = paginator.page(1)
+    except EmptyPage:
+        posts = paginator.page(paginator.num_pages)
 
     return render(request, "network/following.html", {
-            "posts": postlist,
+            "posts": posts,
             "liked": likedlist
         })
 
