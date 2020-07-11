@@ -6,7 +6,7 @@
 
     <!-- New Post Code Block -->
 
-    <div style="border: 1px solid; margin: 20px 20px; padding: 20px 20px;">
+    <div id="newpost">
         <form action="{% url 'post' %}" method="POST" class="form-group" style="margin-bottom: 0">
             {% csrf_token %}
             <h3>New Post</h3>
@@ -18,29 +18,30 @@
 {% endif %}
 
 {% if posts.has_other_pages %}
-<nav aria-label="Page navigation example">
-<ul class="pagination">
-    {% if posts.has_previous %}
-        <li class="page-item"><a class="page-link" href="?page={{ posts.previous_page_number }}">&laquo;</a></li>
-    {% else %}
-        <li class="page-link disabled"><span>&laquo;</span></li>
-    {% endif %}
-    
-    {% for i in posts.paginator.page_range %}
-        {% if posts.number == i %}
-            <li class="active page-item"><span class="page-link">{{ i }} <span class="sr-only">(current)</span></span></li>
+<nav aria-label="Page navigation example" style="margin: 20px 0px; padding: 20px 0;">
+    <ul class="pagination">
+        {% if posts.has_previous %}
+            <li class="page-item"><a class="page-link" href="?page={{ posts.previous_page_number }}">&laquo;</a></li>
         {% else %}
-            <li class="page-item"><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
+            <li class="disabled page-item"><span class="page-link">&laquo;</span></li>
+            
         {% endif %}
-    {% endfor %}
-    
-    {% if posts.has_next %}
-        <li class="page-item"><a class="page-link" href="?page={{ posts.next_page_number }}">&raquo;</a></li>
-    {% else %}
-        <li class="disabled page-item"><span class="page-link">&raquo;</span></li>
-    {% endif %}
-</ul>
-</nav>
+        
+        {% for i in posts.paginator.page_range %}
+            {% if posts.number == i %}
+                <li class="active page-item"><span class="page-link">{{ i }} <span class="sr-only">(current)</span></span></li>
+            {% else %}
+                <li class="page-item"><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
+            {% endif %}
+        {% endfor %}
+        
+        {% if posts.has_next %}
+            <li class="page-item"><a class="page-link" href="?page={{ posts.next_page_number }}">&raquo;</a></li>
+        {% else %}
+            <li class="disabled page-item"><span class="page-link">&raquo;</span></li>
+        {% endif %}
+    </ul>
+    </nav>
 {% endif %}
 
 {% if user.is_authenticated %}
@@ -48,19 +49,24 @@
     <!-- All Posts on the website -->
     {% for post in posts %}
     <div class="post">
-        {% if post.user == request.user %}
-            <button id="{{post.id}}" class="edit">Edit</button>
-        {% endif %}
-        <div class="user"><a href="{% url 'profile' post.user %}">{{post.user}}</a></div>
+        <f class="row">            
+            <div class="user col-3" style="max-width: 15%; flex: 0 0 15%;"><a href="{% url 'profile' post.user %}">{{post.user}}</a></div>
+            
+            <div class="col-6" style="max-width: 75%; flex: 0 0 75%;"></div>
+                
+            {% if post.user == request.user %}
+                    <button class="edit btn col-3" style="max-width: 10%; flex: 0 0 10%" id="{{post.id}}" >Edit</button>
+            {% endif %}
+        </f>
         <div name={{post.id}} class="content">{{post.content}}</div>
         {% if post in liked %}
-                <button class="dislike" id="{{post.id}}">{{post.likes}}</button>
+                <button class="btn like-btn dislike" num={{post.likes}} id="{{post.id}}">&hearts; {{post.likes}}</button>
         {% else %}
-                <button class="like" id="{{post.id}}">{{post.likes}}</button>
+                <button class="btn like-btn like" num={{post.likes}} id="{{post.id}}">&hearts; {{post.likes}}</button>
         {% endif %}
         <f class="row">
-            <div class="col-10"></div>
-            <div class="timestamp col-2">{{post.date}} {{post.time}}</div>
+            <div class="col-10" style="max-width: 77%; flex: 0 0 77%;"></div>
+            <div class="timestamp col-2" style="max-width: 23%; flex: 0 0 23%;">{{post.date}} {{post.time}}</div>
         </f>
     </div>
     {% endfor %}
@@ -68,12 +74,15 @@
 {% else %}
     {% for post in posts %}
         <div class="post">
-            <div class="user"><a href="{% url 'profile' post.user %}">{{post.user}}</a></div>
+            <f class="row"> 
+            <div class="user col-3" style="max-width: 15%; flex: 0 0 15%;"><a href="{% url 'profile' post.user %}">{{post.user}}</a></div>
+            <div class="col-6" style="max-width: 85%; flex: 0 0 85%;"></div>
+            </f>
             <div class="content">{{post.content}}</div>
-            <div class="likes">{{post.likes}}</div>
+            <div class="btn like-btn">&hearts; {{post.likes}}</div>
             <f class="row">
-                <div class="col-10"></div>
-                <div class="timestamp col-2">{{post.date}} {{post.time}}</div>
+                <div class="col-10" style="max-width: 77%; flex: 0 0 77%;"></div>
+                <div class="timestamp col-2" style="max-width: 23%; flex: 0 0 23%;">{{post.date}} {{post.time}}</div>
             </f>
         </div>
     {% endfor %}

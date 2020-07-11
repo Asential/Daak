@@ -66,9 +66,12 @@ function like(post){
     info = $(post)
     info.addClass('dislike')
     info.removeClass('like')
-    count = info.html()
+    count = info.attr('num')
+    console.log(count)
     count++
-    info.html(count)
+    info.attr('num', count)
+    console.log(count)
+    info.html('&hearts; ' + count)
     data = fetch(`/likes/${post.id}`)
     
 }
@@ -76,11 +79,15 @@ function like(post){
 function dislike(post){
 
     info = $(post)
+    console.log(info)
     info.addClass('like')
     info.removeClass('dislike')
-    count = info.html()
+    count = info.attr('num')
+    console.log(count)
     count--
-    info.html(count)
+    info.attr('num', count)
+    console.log(count)
+    info.html('&hearts; ' +  count)
     data = fetch(`/dislikes/${post.id}`)
 
 }
@@ -89,7 +96,7 @@ function edit(post){
     content = $(`div[name=${post.id}]`)
     console.log(content.html())
     data = content.html()
-    content.html(`<textarea id='${post.id}'>${data}</textarea>`)
+    content.html(`<textarea class='text-edit' id='${post.id}'>${data}</textarea>`)
     
     info = $(post)
     info.html('Save')

@@ -1,9 +1,39 @@
-.post{
+body{
+    background-color: wheat;
+}
+
+.post > div, .post > f > div{
+    border-radius: 25px;
+}
+
+#newpost{
+
     margin: 20px 20px;
     padding: 20px 20px;
-    background-color: cyan;
+    border-radius: 25px;
+}
+
+.post{
+    border-radius: 25px;
+    margin: 20px 20px;
+    padding: 20px 20px;
+    margin-bottom: 80px;
     display: flex;
     flex-direction: column;
+}
+
+.text-edit{
+    padding: 20px;
+    border-radius: 25px;
+    width: 100%;
+}
+
+
+.like-btn{
+    margin-top: 10px;
+    border-radius: 25px;
+    background-color: turquoise;
+    width: 10%;
 }
 
 .user{
@@ -11,11 +41,11 @@
     width: fit-content;
     display: inline-block;
     text-align: center;
-    margin-top: 10px
+
 }
 
 .content{
-    margin: 10px 0;
+    padding: 20px 10px;
     background-color: white;
 }
 
@@ -27,12 +57,22 @@
 }
 
 .dislike{
-    background-color: greenyellow;
+    background-color: hotpink;
 }
 
-.edit, .save{
+.pagination{
+    padding-left: 20px;
+}
+
+.edit{
+    padding: 10px 10px;
+    border-radius: 25px;    
+    background-color: orange;
+}
+
+.save{
     width: 10%;
-    background-color: red;
+    background-color: greenyellow;
 }
 
 .row{
@@ -40,12 +80,14 @@
 }
 
 .likes{
+    border-radius: 25px;
     background-color: pink;
     width: 3%;
     text-align: center;
+    
 
 }
 
-.user, .likes, .content, .timestamp{
+.user, .likes, .timestamp{
     padding: 10px 10px;
 }

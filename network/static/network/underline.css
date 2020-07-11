@@ -1,0 +1,82 @@
+@import url(https://fonts.googleapis.com/css?family=Ubuntu:700);
+ body {
+	 font-family: 'Ubuntu', sans-serif;
+}
+ ul {
+	 list-style-type: none;
+	 margin: 0;
+	 text-align: left;
+
+}
+ ul li {
+	 display: inline-block;
+	 margin: 0 20px;
+}
+ a {
+	 font-size: 20px;
+	 color: #584e4a;
+	 position: relative;
+	 text-decoration: none;
+	 padding-bottom: 8px;
+}
+
+#brand{
+    font-size: 20px;
+	color: #584e4a;
+	position: relative;
+	text-decoration: none;
+    padding-bottom: 8px;
+    transition: ease 0.2s;
+}
+
+#brand:hover{
+    transition: ease 0.2s;
+    color: #e75367;
+}
+
+#brand:before, #brand:after{ 
+    opacity: 0;   
+    content: '';
+	position: absolute;
+	bottom: 16px;
+	left: 0;
+	right: 0;
+	height: 2px;
+	background-color: #f37272;
+}
+
+ a:before, a:after {
+    content: '';
+	 position: absolute;
+	 bottom: 8px;
+	 left: 0;
+	 right: 0;
+	 height: 2px;
+	 background-color: #ea93a6;
+}
+ a:before {
+	 opacity: 0;
+	 transform: translateY(- 8px);
+	 transition: transform 0s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0s;
+}
+ a:after {
+	 opacity: 0;
+	 transform: translateY(4px);
+	 transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.2s;
+}
+ a:hover:before, a:focus:before, a:hover:after, a:focus:after {
+
+	 opacity: 1;
+	 transform: translateY(0);
+}
+ a:hover:before, a:focus:before {
+	 transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.2s;
+}
+ a:hover:after, a:focus:after {
+	 transition: transform 0s 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0s 0.2s;
+}
+
+a:hover{
+    color: #e75367;
+}
+ 
