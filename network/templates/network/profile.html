@@ -13,15 +13,15 @@
     {% else %}
         <h2> {{username}} </h2>
         {% if username in followed %}
-            <button class="unfollow" name="{{username}}">Following!</button>
+            <button class="unfollow btn" name="{{username}}">Following!</button>
         {% else %}
-            <button class="follow" name="{{username}}">Follow</button>
+            <button class="follow btn" name="{{username}}">Follow</button>
         {% endif %}
-    
+        <br><br>
     {% endif %}
     
     <div>
-        Followers: <div id="followersCount">{{followersCount}}</div>
+        Followers: <div id="followersCount">{{followersCount}}</div><br>
     </div>
     <div>
         Following: <div id="followingCount">{{followingCount}}</div>
